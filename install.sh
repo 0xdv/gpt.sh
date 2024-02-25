@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euv
+set -eu
 
 echo 'Clean up'
 rm -rf venv-gpt
@@ -13,6 +13,10 @@ source ./venv-gpt/bin/activate
 
 echo 'Install requirements...'
 pip install -r requirements.txt
+
+echo ""
+echo "Please reopen terminal or execute:"
+echo "source ./venv-gpt/bin/activate"
 
 
 
