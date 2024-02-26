@@ -7,6 +7,7 @@ It's like a smart `man`.
 git clone git@github.com:0xdv/gpt.sh.git
 cd gpt.sh
 ./install.sh
+source ./venv-gpt/bin/activate
 ```
 
 # Usage
