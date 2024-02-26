@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import sys
 import g4f
@@ -19,11 +19,19 @@ def generate_response(prompt: str) -> str:
     return response
 
 prompt = """
-    Imagine you are an expert Linux, Bash scripting, JavaScript, Python and related fields. 
+    Imagine you are an expert Linux, Bash scripting, JavaScript, Python and related fields.
     I will ask you questions related this area and expect for your help.
     Please answer as short as possible, do not include unneeded details to your answer.
     Omit surplus unnecessary text, concentrate on code examples.
 """
+
+if not sys.stdin.isatty():
+    file =  "".join([line for line in sys.stdin])
+    prompt += f"""
+        I have file:
+        {file}
+
+    """
 
 user_input = ' '.join(sys.argv[1:])
 
@@ -32,6 +40,7 @@ My question is: {user_input}
 """
 
 print(colored(user_input, "magenta"))
+# print(prompt)
 
 start_time = time.time()
 response = generate_response(prompt)
