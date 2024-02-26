@@ -1,7 +1,11 @@
 # GPT.sh
 
-I created tiny tool to ask questions related to programming or Bash right in the terminal.
-Consider it like a smart `man`.
+`GPT.sh` is a command-line tool that allows you to ask programming or Bash-related questions right in the terminal.
+It functions as a smart `man` page, providing answers and guidance for various programming tasks.
+You can use it to ask questions about topics like Python scripting, Vim commands, and more, it's up to you.
+The tool leverages the power of OpenAI's GPT language model to generate responses to your queries.
+
+This tool doesn't have access to your file system, and won't run any commands on your computer.
 
 # Installation
 
@@ -15,15 +19,17 @@ source ./venv-gpt/bin/activate # do not forget to activate the venv
 # Usage
 
 ```bash
-./gpt.py how to rename file
+./gpt how to rename file
 
-./gpt.py write script in python to scrape website
+./gpt write script in python to scrape website
 
-./gpt.py how to escape vim, please help
+./gpt how to escape vim, please help
 ```
 
 You also able to pass files to the input simply by pipe:
 
 ```bash
-cat gpt.py | ./gpt.py explain this scirpt
+cat install.sh | ./gpt explain this scirpt
 ```
+
+- remember DO NOT pass any confidential data to the input
