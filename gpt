@@ -2,15 +2,18 @@
 
 import sys
 import g4f
+import time
 from termcolor import colored
 from rich.console import Console
 from rich.markdown import Markdown
-import time
+
+import knowledge
 
 console = Console()
 
 # flags
 g4f.debug.version_check = False
+is_save = '--save' in sys.argv
 is_raw = '--raw' in sys.argv
 has_file = not sys.stdin.isatty()
 
@@ -20,6 +23,44 @@ linux_expert = """
     Please answer as short as possible, do not include unneeded details to your answer.
     Omit surplus unnecessary text, concentrate on code examples.
 """
+
+def main():
+    if is_save:
+        knowledge.save_knowledge()
+    else:
+        get_answer()
+
+def get_answer():
+    file = ""
+    if has_file:
+        file = "".join([line for line in sys.stdin])
+
+    user_input = ' '.join(sys.argv[1:])
+
+    if is_raw:
+        prompt = file
+        prompt += user_input
+    else:
+        prompt = linux_expert
+        if has_file:
+            prompt += f"""
+            I have a file:
+            {file}
+
+            """
+        prompt += f"""
+            My question is: {user_input}
+        """
+
+    print(colored(user_input, "magenta"))
+    # print(prompt)
+
+    response = generate_response(prompt)
+    knowledge.save_last_result(response)
+
+    md = Markdown(response)
+    console.print(md)
+
 
 def generate_response(prompt: str) -> str:
     start_time = time.time()
@@ -31,33 +72,4 @@ def generate_response(prompt: str) -> str:
     print(colored(f"GPT answer took {(end_time - start_time):.2f} seconds", "grey"))
     return response
 
-file = ""
-if has_file:
-    file = "".join([line for line in sys.stdin])
-
-
-user_input = ' '.join(sys.argv[1:])
-
-if is_raw:
-    prompt = file
-    prompt += user_input
-else:
-    prompt = linux_expert
-    if has_file:
-        prompt += f"""
-        I have a file:
-        {file}
-
-        """
-    prompt += f"""
-        My question is: {user_input}
-    """
-
-print(colored(user_input, "magenta"))
-# print(prompt)
-
-response = generate_response(prompt)
-
-
-md = Markdown(response)
-console.print(md)
+main()
